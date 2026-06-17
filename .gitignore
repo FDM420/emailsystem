@@ -1,5 +1,6 @@
 # Credentials - NEVER commit
 .config/
+.env
 *.env
 *.secret
 secrets/
@@ -7,3 +8,7 @@ secrets/
 # Client passwords (if you keep them in client folders)
 clients/**/passwords.txt
 clients/**/credentials.json
+
+# Node
+node_modules/
+npm-debug.log*
