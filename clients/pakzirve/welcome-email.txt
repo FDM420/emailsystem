@@ -1,0 +1,26 @@
+﻿Subject: Your business email is ready - pakzirve.com
+
+Hi,
+
+Your business email on pakzirve.com is now live. Login details:
+
+WEBMAIL (easiest):
+  URL:      https://tuesday.mxrouting.net/webmail
+  Username: your full email address (e.g. info@pakzirve.com)
+  Password: see below (please change it on first login)
+
+MAILBOXES:
+  - info@pakzirve.com
+
+(Passwords are in credentials.json - copy each into this email per mailbox before sending.)
+
+USE IN OUTLOOK / GMAIL APP / iPhone:
+  Incoming (IMAP): tuesday.mxrouting.net  port 993  SSL/TLS
+  Outgoing (SMTP): tuesday.mxrouting.net  port 465  SSL/TLS
+  Username: full email address   Password: mailbox password
+  (If 465 is blocked, try 587 or 2525.)
+
+Tip: check Spam for the first week while the domain builds reputation.
+
+Best,
+Your Name

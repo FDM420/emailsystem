@@ -1,0 +1,54 @@
+DNS RECORDS FOR: {{clientdomain.com}}
+====================================
+Provider: MXroute (server: tuesday.mxrouting.net)
+Date set: {{YYYY-MM-DD}}
+DNS host: {{Cloudflare / Namecheap / GoDaddy / Hostinger / other}}
+
+Get this domain's exact values (incl. unique DKIM key) by running:
+  .\scripts\Get-Dns.ps1 -Domain {{clientdomain.com}}
+
+For TXT records, paste the VALUE WITHOUT surrounding quotes.
+
+------------------------------------------------------------------------------
+[x] 0) DOMAIN VERIFICATION TXT (added when domain was created; delete after)
+------------------------------------------------------------------------------
+Type   Name                          Value
+TXT    _da-verify-<hash>             domain-verified
+
+------------------------------------------------------------------------------
+[ ] 1) MX RECORDS (add BOTH)
+------------------------------------------------------------------------------
+Type   Name   Priority   Value
+MX     @      10         tuesday.mxrouting.net
+MX     @      20         tuesday-relay.mxrouting.net
+
+------------------------------------------------------------------------------
+[ ] 2) SPF RECORD
+------------------------------------------------------------------------------
+Type   Name   Value
+TXT    @      v=spf1 include:mxroute.com -all
+
+------------------------------------------------------------------------------
+[ ] 3) DKIM RECORD (paste long key from Get-Dns.ps1 output)
+------------------------------------------------------------------------------
+Type   Name           Value
+TXT    x._domainkey   v=DKIM1; k=rsa; p=<key from Get-Dns.ps1>
+
+------------------------------------------------------------------------------
+[ ] 4) DMARC RECORD
+------------------------------------------------------------------------------
+Type   Name      Value
+TXT    _dmarc    v=DMARC1; p=quarantine; rua=mailto:dmarc@{{clientdomain.com}}; pct=100; adkim=s; aspf=s
+
+------------------------------------------------------------------------------
+[ ] 5) OPTIONAL: AUTODISCOVER / AUTOCONFIG
+------------------------------------------------------------------------------
+Type   Name              Value
+CNAME  autodiscover      tuesday.mxrouting.net.
+CNAME  autoconfig        tuesday.mxrouting.net.
+
+------------------------------------------------------------------------------
+[ ] MX Lookup at mxtoolbox.com shows tuesday.mxrouting.net
+[ ] Test email Gmail -> mailbox: received in inbox (not spam)
+[ ] mail-tester.com score: ___/10
+[ ] Welcome email sent to client

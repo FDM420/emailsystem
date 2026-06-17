@@ -1,0 +1,64 @@
+PURELYMAIL DNS RECORDS
+======================
+Paste these into the client's domain registrar (Cloudflare, Namecheap, GoDaddy, etc).
+Replace placeholders with values from your Purelymail dashboard → "Setup DNS Records".
+
+IMPORTANT: Purelymail will give you EXACT values for your account. The selectors and
+DKIM keys are unique per account. Always copy from the dashboard, not from this template.
+
+------------------------------------------------------------------------------
+1) MX RECORDS (required - routes incoming mail)
+------------------------------------------------------------------------------
+Type   Name   Priority   Value
+MX     @      10         mailserver.purelymail.com.
+MX     @      20         mailserver-aux.purelymail.com.
+
+(Check your Purelymail dashboard for the current exact hostnames - they may differ.)
+
+------------------------------------------------------------------------------
+2) SPF RECORD (required - prevents spoofing, helps deliverability)
+------------------------------------------------------------------------------
+Type   Name   Value
+TXT    @      v=spf1 include:_spf.purelymail.com ~all
+
+If the domain already has an SPF record, MERGE the includes - do not add a second
+TXT record starting with v=spf1. Only one SPF record per domain is allowed.
+
+------------------------------------------------------------------------------
+3) DKIM RECORDS (required - cryptographically signs outgoing mail)
+------------------------------------------------------------------------------
+Purelymail gives you 2-3 DKIM records to add. Format is usually:
+
+Type   Name                              Value
+TXT    purelymail1._domainkey            <long key from Purelymail dashboard>
+TXT    purelymail2._domainkey            <long key from Purelymail dashboard>
+TXT    purelymail3._domainkey            <long key from Purelymail dashboard>
+
+Get the exact selectors and keys from: Purelymail dashboard → Domain → DNS Records
+
+------------------------------------------------------------------------------
+4) DMARC RECORD (recommended - tells receivers what to do with failed mail)
+------------------------------------------------------------------------------
+Type   Name      Value
+TXT    _dmarc    v=DMARC1; p=quarantine; rua=mailto:dmarc@<clientdomain.com>; pct=100; adkim=s; aspf=s
+
+Start with p=quarantine for new domains. Move to p=reject after 1-2 weeks of clean DMARC reports.
+
+------------------------------------------------------------------------------
+5) OPTIONAL: AUTODISCOVER / AUTOCONFIG (for Outlook/Thunderbird auto-setup)
+------------------------------------------------------------------------------
+Type   Name              Value
+CNAME  autoconfig        autoconfig.purelymail.com.
+CNAME  autodiscover      autodiscover.purelymail.com.
+
+------------------------------------------------------------------------------
+VERIFICATION
+------------------------------------------------------------------------------
+After 5-30 minutes (DNS propagation):
+- Go to Purelymail dashboard → click "Verify DNS" on the domain
+- All checks should turn green
+- Test by sending an email from a Gmail account to a mailbox on the new domain
+- Test by sending an email FROM the new mailbox to a Gmail account (check it doesn't land in spam)
+
+Free DKIM/SPF/DMARC checker: https://www.mail-tester.com
+(Send a test email there from the new mailbox, aim for a 10/10 score.)

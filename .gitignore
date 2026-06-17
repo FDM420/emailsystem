@@ -1,0 +1,9 @@
+# Credentials - NEVER commit
+.config/
+*.env
+*.secret
+secrets/
+
+# Client passwords (if you keep them in client folders)
+clients/**/passwords.txt
+clients/**/credentials.json

@@ -1,0 +1,2 @@
+client_name,domain,mailboxes,provider,signup_date,renewal_date,price_per_year,status,notes
+pakzirve,pakzirve.com,info,MXroute,2026-06-17,,0,active,TEST DOMAIN - first end-to-end test of the system

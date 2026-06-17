@@ -1,0 +1,73 @@
+MXROUTE DNS RECORDS (Server: tuesday.mxrouting.net)
+====================================================
+AUTHORITATIVE VALUES confirmed from MXroute API (GET /domains/<domain>/dns).
+Paste these at the client's DNS host after the domain is added in MXroute.
+
+For TXT records, paste the VALUE WITHOUT surrounding quotes.
+
+TIP: The fastest way to get a domain's exact records (incl. the unique DKIM key)
+is to run:  .\scripts\Get-Dns.ps1 -Domain <clientdomain.com>
+
+------------------------------------------------------------------------------
+0) DOMAIN VERIFICATION (one-time, before adding domain to account)
+------------------------------------------------------------------------------
+When adding a new domain at panel.mxroute.com, MXroute gives a TXT record:
+Type   Name                          Value
+TXT    _da-verify-<random-hash>      domain-verified
+Add it at the DNS host, wait 5-15 min, retry adding the domain.
+Can be deleted after the domain is successfully added.
+
+------------------------------------------------------------------------------
+1) MX RECORDS (required - add BOTH)
+------------------------------------------------------------------------------
+Type   Name   Priority   Value
+MX     @      10         tuesday.mxrouting.net
+MX     @      20         tuesday-relay.mxrouting.net
+
+------------------------------------------------------------------------------
+2) SPF RECORD (required)
+------------------------------------------------------------------------------
+Type   Name   Value
+TXT    @      v=spf1 include:mxroute.com -all
+
+If the domain already has an SPF record, REPLACE it - only one SPF per domain.
+
+------------------------------------------------------------------------------
+3) DKIM RECORD (required - UNIQUE PER DOMAIN)
+------------------------------------------------------------------------------
+Type   Name           Value
+TXT    x._domainkey   v=DKIM1; k=rsa; p=<long key - get via Get-Dns.ps1 per domain>
+
+The selector is "x" (i.e. record name "x._domainkey"). The key differs per domain.
+
+------------------------------------------------------------------------------
+4) DMARC RECORD (recommended - MXroute does NOT auto-add this)
+------------------------------------------------------------------------------
+Type   Name      Value
+TXT    _dmarc    v=DMARC1; p=quarantine; rua=mailto:dmarc@<clientdomain.com>; pct=100; adkim=s; aspf=s
+
+Start with p=quarantine on new domains; move to p=reject after 1-2 weeks if desired.
+
+------------------------------------------------------------------------------
+5) OPTIONAL: AUTODISCOVER / AUTOCONFIG (Outlook auto-setup)
+------------------------------------------------------------------------------
+Type   Name              Value
+CNAME  autodiscover      tuesday.mxrouting.net.
+CNAME  autoconfig        tuesday.mxrouting.net.
+
+------------------------------------------------------------------------------
+VERIFICATION (after 10-30 min propagation)
+------------------------------------------------------------------------------
+- https://mxtoolbox.com/SuperTool.aspx -> domain -> MX Lookup
+- Send Gmail -> a mailbox on the domain (should land in inbox)
+- Send FROM the mailbox -> https://www.mail-tester.com (aim 9-10/10)
+
+------------------------------------------------------------------------------
+QUICK REFERENCE - CLIENT MAIL APP SETTINGS
+------------------------------------------------------------------------------
+Webmail:       https://tuesday.mxrouting.net/webmail
+IMAP server:   tuesday.mxrouting.net   port 993   SSL/TLS
+SMTP server:   tuesday.mxrouting.net   port 465   SSL/TLS
+Alt SMTP:      port 587 STARTTLS, or 2525 STARTTLS (if 465 blocked)
+Username:      the full email address (e.g. info@clientdomain.com)
+Password:      the mailbox password
